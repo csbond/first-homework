@@ -4,16 +4,18 @@ require 'yaml'
 require 'json'
 num = 1 
 problem = YAML.load_file("a.yml")
-threads = []
+threads, test = [], []
 problem.each {|k, v| 
-	v.each do |c, f|
+	v.each do |c, e|
 		threads << Thread.new("#{num}") do
-			response = Net::HTTP.get(URI(f))
-			File.open(File.new( "temp#{num}.json","w"),"w") do |f|
+			response = Net::HTTP.get(URI(e))
+			filename = "/tmp/temp#{num}.json"
+			File.open(filename,"w") do |f|
 				f.write(JSON.parse(response).to_json)
 			end
-			pri = JSON.parse(File.read("temp#{num}.json"))
+			pri = JSON.parse(File.read(filename))
 			pri.each do |p, d|
+				test[num - 1] = pri 
 				puts "key: #{p}. value: #{d}" if d == 0 
 			end
 			num = num + 1
@@ -21,3 +23,7 @@ problem.each {|k, v|
 	end
 }
 threads.each { |t| t.join  }
+puts "The all result:"
+test.each do |k, v|
+	puts "#{k},#{v}"
+end
