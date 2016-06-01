@@ -1,0 +1,5 @@
+program:
+  url1: http://api.linkedin.com/v1/people/~/suggestions/to-follow/companies?format=json
+  url2: https://api.github.com/user
+  url3: https://api.github.com/search/users?q={query}{&page,per_page,sort,order}
+
